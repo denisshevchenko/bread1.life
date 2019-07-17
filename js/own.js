@@ -12,7 +12,10 @@ $(document).ready(function(){
     $("#food_name").autocomplete({
         data: {
             "Белый хлеб": null,
-            "Банан": null // 'https://placehold.it/250x250'
+            "Банан": null,
+            "Виноград": null,
+            "Груша": null,
+            "Виноград": null
         },
     });
     
