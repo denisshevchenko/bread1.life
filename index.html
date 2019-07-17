@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title data-tkey="pageTitle">&nbsp;</title>
+        <meta name="description" content="Bread units calculator. Калькулятор хлебных единиц."/>
+        <link rel="shortcut icon" href="img/favicon.png" />
+        <!--Import Google Fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap&subset=cyrillic" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <!--Own css-->
+        <style>
+            html {
+                height: 100%;
+                font-family: 'Roboto', sans-serif;
+                font-size: 1.13em;
+            }
+
+            body {
+                display: flex;
+                flex-direction: column;
+                height: 100vh;
+            }
+
+            main {
+                flex: 1 0 auto;
+            }
+
+            h4 {
+                font-size: 1.6em;
+            }
+
+            h5 {
+                font-size: 1.2em;
+                padding-top: 0.6em;
+            }
+
+            a {
+                color: #620808;
+            }
+
+            .input-field > label {
+                font-size: 1.3em;
+                color: #444;
+            }
+
+            .input-field .helper-text {
+                font-size: 0.8em;
+            }
+
+            input[type="text"]:not(.browser-default) {
+                font-size: 1.6em;
+                padding-top: 0.5em;
+            }
+
+            header {
+                padding-top: 3em;
+                padding-bottom: 4em;
+            }
+
+            footer {
+                flex-shrink: 0;
+                padding-bottom: 2em;
+                font-size: 90%;
+                color: #999;
+            }
+
+            .form_v_separator {
+                padding-top: 2em;
+            }
+
+            .or {
+                font-size: 1.2em;
+                margin-top: 2.0em;
+            }
+
+            .language_selector {
+                font-size: 120%;
+            }
+
+            .logo_area {
+                padding-top: 2em;
+                padding-bottom: 2em;
+            }
+
+            .logo_img {
+                max-width: 132px;
+            }
+        </style>
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+
+    <body>
+        <header>
+            <div class="container">
+                <div class="row">
+                    <div class="col s6 language_selector">
+                        <a class="waves-effect btn-flat" onclick="setLanguage('en')">en</a>
+                        |
+                        <a class="waves-effect btn-flat" onclick="setLanguage('ru')">ru</a>
+                    </div>
+
+                    <div class="col s6 right-align">
+                        <button data-target="modal1" class="waves-effect btn-flat modal-trigger" data-tkey="whatIsItButton"></button>
+                    </div>
+
+                    <div id="modal1" class="modal modal-fixed-footer">
+                        <div class="modal-content">
+                            <h4 data-tkey="breadUnitTitle">&nbsp;</h4>
+
+                            <h5 data-tkey="whatIsIt">&nbsp;</h5>
+                            <p data-tkey="whatIsItDetails"></p>
+
+                            <h5 data-tkey="howToUseIt">&nbsp;</h5>
+                            <p data-tkey="howToUseItDetails"></p>
+
+                            <h5 data-tkey="disclaimer">&nbsp;</h5>
+                            <p data-tkey="disclaimerDetails"></p>
+
+                            <h5 data-tkey="oss">&nbsp;</h5>
+                            <p data-tkey="ossDetails"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#!" class="modal-close waves-effect btn-flat" data-tkey="agree"></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="center-align logo_area">
+                    <img src="img/bread1.png" class="logo_img" alt="Bread1" />
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="container">
+                <form class="col s12" id="aForm">
+                    <div class="row">
+                        <div class="input-field col s5">
+                            <input placeholder=" " id="food_name" type="text" class="validate autocomplete">
+                            <label for="food_name" data-tkey="foodName"></label>
+                            <span class="helper-text" data-error="" data-success="" data-tkey="foodNameHelper"></span>
+                        </div>
+
+                        <div class="col s2 or center-align" data-tkey="or"></div>
+
+                        <div class="input-field col s5">
+                            <input placeholder=" " id="carbs" type="text" class="validate">
+                            <label for="carbs" data-tkey="carbs"></label>
+                            <span class="helper-text" data-error="" data-success="" data-tkey="carbsHelper"></span>
+                        </div>
+                    </div>
+
+                    <div class="form_v_separator"></div>
+
+                    <div class="row">
+                        <div class="input-field col s5">
+                            <input placeholder=" " disabled id="in_gramms" type="text" class="validate">
+                            <label for="in_gramms" data-tkey="gramms"></label>
+                            <span class="helper-text" data-error="" data-success="" data-tkey="grammsHelper"></span>
+                        </div>
+
+                        <div class="col s2 or center-align" data-tkey="or"></div>
+
+                        <div class="input-field col s5">
+                            <input placeholder=" " disabled id="in_bunits" type="text" class="validate">
+                            <label for="in_bunits" data-tkey="bunits"></label>
+                            <span class="helper-text" data-error="" data-success="" data-tkey="bunitsHelper"></span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+        <footer class="right-align">
+            <div class="container">
+                &copy; <span data-tkey="me"></span> 2017&mdash;2019
+            </div>
+        </footer>
+
+        <!--JavaScript at end of body for optimized loading-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script src="js/own.js"></script>
+    </body>
+</html>
