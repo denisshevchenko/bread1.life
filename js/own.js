@@ -15,8 +15,9 @@ $(document).ready(function(){
         currentLanguage = "en";
     }
     setLanguage(currentLanguage);
-    // Initialize modal dialogs.
+    // Initialize modal dialogs and dropdowns.
     $(".modal").modal();
+    $(".dropdown-trigger").dropdown();
     // In the beginning inputs for amount are disabled.
     cleanNDisableAmountInputs();
 
@@ -38,12 +39,14 @@ $(document).ready(function(){
 });
 
 // Clearable input for food name.
-function tog(v){ return v ? "addClass" : "removeClass"; }
-    $(document).on("input", ".clearable", function(){
+function tog(v) {
+    return (v ? "addClass" : "removeClass");
+}
+$(document).on("input", ".clearable", function() {
     $(this)[tog(this.value)]("x");
-}).on("mousemove", ".x", function( e ){
+}).on("mousemove", ".x", function( e ) {
     $(this)[tog(this.offsetWidth-18 < e.clientX-this.getBoundingClientRect().left)]("onX");
-}).on("touchstart click", ".onX", function( ev ){
+}).on("touchstart click", ".onX", function( ev ) {
     ev.preventDefault();
     $(this).removeClass("x onX").val("").change();
     // Reset amount inputs as well...
@@ -210,6 +213,8 @@ function translate(localizedText){
 
 function setLanguage(lang) {
     localStorage.setItem("BU_language", lang);
+    // Show current language on a dropdown-button.
+    $("#language-selector-id").html(lang + "&nbsp;&nbsp;&nbsp;▼");
     currentLanguage = lang;
     if (lang == "ru") {
         translate(ruText);
