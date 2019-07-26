@@ -1,140 +1,522 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title data-tkey="pageTitle">&nbsp;</title>
-        <meta name="description" content="Bread units calculator. Калькулятор хлебных единиц."/>
-        <link rel="shortcut icon" href="img/favicon.png" />
-        <!--Import Google Fonts-->
-        <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap&subset=cyrillic" rel="stylesheet">
-        <!--Import materialize.css-->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-        <!--<link rel="stylesheet" href="css/materialize.min.css">-->
-        <!--Own css-->
-        <style>
-            html { height: 100%; font-family: 'Roboto', sans-serif; font-size: 1.13em; }
-            body { display: flex; flex-direction: column; height: 100vh; }
+  <head>
+    <meta charset="utf-8">
+    <title data-tkey="pageTitle">&nbsp;</title>
+    <meta name="description" content="Bread units calculator. Калькулятор хлебных единиц."/>
+    <link rel="shortcut icon" href="img/favicon.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!--<link rel="stylesheet" href="css/materialize.min.css">-->
+    <style>
+      html { height: 100%; font-family: "PT Sans", "Roboto", "Lucida Grande", "Calibri", sans-serif; font-size: 1.13em; }
+      body { display: flex; flex-direction: column; height: 100vh; }
 
-            header { padding-top: 3em; padding-bottom: 4em; }
-            main { flex: 1 0 auto; }
-            footer { flex-shrink: 0; padding-bottom: 2em; font-size: 90%; color: #999; }
+      header { padding-top: 3em; padding-bottom: 5em; }
+      main { flex: 1 0 auto; }
+      footer { flex-shrink: 0; padding-bottom: 2em; }
 
-            h4 { font-size: 1.6em; }
-            h5 { font-size: 1.2em; padding-top: 0.6em; }
-            a { color: #620808; }
+      h4 { font-size: 1.6em; }
+      h5 { font-size: 1.2em; padding-top: 0.6em; }
 
-            .input-field > label { font-size: 1.3em; color: #444; }
-            .input-field .helper-text { font-size: 0.8em; }
-            input[type="text"]:not(.browser-default) { font-size: 1.6em; padding-top: 0.5em; }
+      .input-field > label { font-size: 1.5em; color: #444; }
+      .input-field .helper-text { font-size: 1.0em; }
+      input[type="text"]:not(.browser-default) { font-size: 1.6em; padding-top: 0.5em; }
 
-            .form_v_separator { padding-top: 2em; }
-            .or { font-size: 1.2em; margin-top: 2.0em; }
-            .arr { font-size: 2.0em; margin-top: 0.85em; }
-            .language_selector { font-size: 120%; }
-            .logo_area { padding-top: 2em; padding-bottom: 2em; }
-            .logo_img { max-width: 132px; }
-            .disclaimerText { color: #dd2c00; }
-            /* Specific styles for mobile displays */
-            @media only screen and (max-width: 380px) {
-                .input-field > label { font-size: 1.0em; color: #444; }
-                .input-field .helper-text { font-size: 0.7em; }
-                input[type="text"]:not(.browser-default) { font-size: 1.2em; padding-top: 0.5em; }
-            }
-        </style>
-        <!--Let browser know website is optimized for mobile-->
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
+      .form-v-separator { padding-top: 2em; }
+      .or { font-size: 1.4em; margin-top: 1.7em; }
+      .arr { font-size: 2.0em; margin-top: 0.85em; }
+      .language-selector { font-size: 120%; }
+      .logo-img { max-width: 74px; }
+      .header-block { padding: 0 0 0 0 !important; }
+      .disclaimerText { color: #dd2c00; }
+      .author { font-size: 90%; color: #999; }
+      /* Specific styles for mobile displays */
+      @media only screen and (max-width: 380px) {
+        .input-field > label { font-size: 1.0em; color: #444; }
+        .input-field .helper-text { font-size: 0.7em; }
+        input[type="text"]:not(.browser-default) { font-size: 1.2em; padding-top: 0.5em; }
+        .author { font-size: 80%; color: #999; }
+      }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
 
-    <body>
-        <header>
-            <div class="container">
-                <div class="row">
-                    <div class="col s6 language_selector">
-                        <a id="language-selector-id" class="dropdown-trigger waves-effect btn-flat" data-target='set-lang'></a>
+  <body>
+    <header>
+      <div class="container">
+        <div class="row">
+          <div class="col s6 header-block">
+            <img src="img/bread1.png" class="logo-img" alt="Bread1" />
+          </div>
 
-                        <ul id='set-lang' class='dropdown-content'>
-                            <li><a onclick="setLanguage('en')">en</a></li>
-                            <li><a onclick="setLanguage('ru')">ru</a></li>
-                        </ul>
-                    </div>
+          <div class="col s6 right-align language-selector header-block">
+            <a id="language-selector-id" class="dropdown-trigger waves-effect btn-flat" data-target='set-lang'></a>
 
-                    <div class="col s6 right-align">
-                        <button data-target="modal1" class="waves-effect btn-flat modal-trigger" data-tkey="whatIsItButton"></button>
-                    </div>
+            <ul id='set-lang' class='dropdown-content'>
+              <li><a onclick="setLanguage('en')">English</a></li>
+              <li><a onclick="setLanguage('ru')">Русский</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </header>
 
-                    <div id="modal1" class="modal">
-                        <div class="modal-content">
-                            <h4 data-tkey="breadUnitTitle">&nbsp;</h4>
-
-                            <h5 data-tkey="whatIsIt">&nbsp;</h5>
-                            <p data-tkey="whatIsItDetails"></p>
-
-                            <h5 data-tkey="howToUseIt">&nbsp;</h5>
-                            <p data-tkey="howToUseItDetails"></p>
-
-                            <h5 data-tkey="disclaimer" class="disclaimerText">&nbsp;</h5>
-                            <p data-tkey="disclaimerDetails"></p>
-                        </div>
-                        <div class="modal-footer">
-                            <a class="modal-close waves-effect btn-flat" data-tkey="agree"></a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="center-align logo_area">
-                    <img src="img/bread1.png" class="logo_img" alt="Bread1" />
-                </div>
+    <main>
+      <div class="container">
+        <form class="col s10" id="aForm">
+          <div class="row">
+            <div class="input-field col s5">
+              <input placeholder=" " id="food-name-id" type="text" class="autocomplete">
+              <label for="food-name-id" data-tkey="foodName"></label>
+              <span id="food-name-helper-id" class="helper-text" data-tkey="foodNameHelper"></span>
             </div>
-        </header>
 
-        <main>
-            <div class="container">
-                <form class="col s12" id="aForm">
-                    <div class="row">
-                        <div class="input-field col s5">
-                            <input placeholder=" " id="food_name" type="text" class="autocomplete">
-                            <label for="food_name" data-tkey="foodName"></label>
-                            <span id="food-name-helper-id" class="helper-text" data-tkey="foodNameHelper"></span>
-                        </div>
+            <div class="col s2 or center-align" data-tkey="or"></div>
 
-                        <div class="col s2 or center-align" data-tkey="or"></div>
-
-                        <div class="input-field col s5">
-                            <input placeholder=" " id="carbs" type="text">
-                            <label for="carbs" data-tkey="carbs"></label>
-                            <span id="carbs-helper-id" class="helper-text" data-tkey="carbsHelper"></span>
-                        </div>
-                    </div>
-
-                    <div class="form_v_separator"></div>
-
-                    <div class="row">
-                        <div class="input-field col s5">
-                            <input placeholder=" " disabled id="in_gramms" type="text">
-                            <label for="in_gramms" data-tkey="gramms"></label>
-                            <span id="in-gramms-helper-id" class="helper-text" data-tkey="grammsHelper"></span>
-                        </div>
-
-                        <div id="arr-id" class="col s2 arr center-align">↔</div>
-
-                        <div class="input-field col s5">
-                            <input placeholder=" " disabled id="in_bunits" type="text">
-                            <label for="in_bunits" data-tkey="bunits"></label>
-                            <span id="in-bunits-helper-id" class="helper-text" data-tkey="bunitsHelper"></span>
-                        </div>
-                    </div>
-                </form>
+            <div class="input-field col s5">
+              <input placeholder=" " id="carbs" type="text">
+              <label for="carbs" data-tkey="carbs"></label>
+              <span id="carbs-helper-id" class="helper-text" data-tkey="carbsHelper"></span>
             </div>
-        </main>
+          </div>
 
-        <footer class="right-align">
-            <div class="container">
-                &copy; <span data-tkey="me"></span> 2017&mdash;2019
+          <div class="form-v-separator"></div>
+
+          <div class="row">
+            <div class="input-field col s5">
+              <input placeholder=" " disabled id="in-grams" type="text">
+              <label for="in-grams" data-tkey="grams"></label>
+              <span id="in-grams-helper-id" class="helper-text" data-tkey="gramsHelper"></span>
             </div>
-        </footer>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-        <!--<script src="js/materialize.min.js"></script>-->
-        <script src="js/own.js"></script>
-    </body>
+            <div id="arr-id" class="col s2 arr center-align">↔</div>
+
+            <div class="input-field col s5">
+              <input placeholder=" " disabled id="in-bunits" type="text">
+              <label for="in-bunits" data-tkey="bunits"></label>
+              <span id="in-bunits-helper-id" class="helper-text" data-tkey="bunitsHelper"></span>
+            </div>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <a href="" data-target="modal1" class="modal-trigger" data-tkey="whatIsItButton"></a>
+        <span class="author">
+          &nbsp;&nbsp;&#8226;&nbsp;&nbsp; &copy; <a href="https://dshevchenko.biz" data-tkey="me"></a> 2017&mdash;2019
+        </span>
+
+        <div id="modal1" class="modal">
+          <div class="modal-content">
+            <h4 data-tkey="breadUnitTitle">&nbsp;</h4>
+
+            <p data-tkey="whatIsItDetails"></p>
+
+            <h5 data-tkey="howToUseIt">&nbsp;</h5>
+            <p data-tkey="howToUseItDetails"></p>
+
+            <h5 data-tkey="disclaimer" class="disclaimerText">&nbsp;</h5>
+            <p data-tkey="disclaimerDetails"></p>
+          </div>
+          <div class="modal-footer">
+            <a class="modal-close waves-effect btn-flat" data-tkey="agree"></a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!--<script src="js/materialize.min.js"></script>-->
+    <script>
+// Create complete information about the food.
+const food = createFood();
+// 1 BU is amount of food that contains 10-12 grams of digestible carbohydrates,
+// let's take 11.0 for now.
+const gramsIn1BU = 11.0;
+// Global state for the current language.
+var currentLanguage = "";
+// Global state for the current carbs value (carbs/100g) for calculation.
+var currentCarbsIn100g = 0;
+
+document.addEventListener('DOMContentLoaded', function(){
+  // Remember what language was used before...
+  currentLanguage = localStorage.getItem("BU_language");
+  if (!currentLanguage) {
+    currentLanguage = "en";
+  }
+  setLanguage(currentLanguage);
+  // Initialize modal dialogs and dropdowns.
+  const modalInstances = M.Modal.init(document.querySelectorAll('.modal'));
+  const dropdownInstances = M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
+  // In the beginning inputs for amount are disabled.
+  cleanNDisableAmountInputs();
+  // Does user define food?
+  checkIfUserIsDefiningFood("food-name-id");
+  checkIfUserIsDefiningFood("carbs");
+  // Make sure user inputs numbers only...
+  validateNumberIn("carbs");
+  validateNumberIn("in-grams");
+  validateNumberIn("in-bunits");
+  // It should be from 0 to 100.
+  checkIfCarbsValueIsValid();
+  // It should exist in a list (corresponding to current language).
+  checkIfFoodNameIsValid();
+  // Calculate BU <-> grams
+  calculateFoodAmount();
+}, false);
+
+function getById(anId) {
+  return document.getElementById(anId);
+}
+
+function valueOf(anId) {
+  return getById(anId).value.trim();
+}
+
+function checkIfUserIsDefiningFood(anId) {
+  getById(anId).addEventListener("input",function(e){
+    if( valueOf(anId) == "" ) {
+      cleanNDisableAmountInputs();
+    } else {
+      enableAmountInputs();
+    }
+  });
+}
+
+function validateNumberIn(anId) {
+  getById(anId).addEventListener("keypress", function(key) {
+    const itIsDigit = key.charCode >= 48 && key.charCode <= 57;
+    const itIsDoubleSeparator = String.fromCharCode(key.which) == "." || String.fromCharCode(key.which) == ",";
+    if (!itIsDigit && !itIsDoubleSeparator) {
+      return false;
+    }
+  });
+
+  getById(anId).addEventListener("input", function(key) {
+    const floatNumberPatt = new RegExp("^[0-9]+([.,\,]{1})?[0-9]*$");
+    const itIsFloatNumber = floatNumberPatt.test(valueOf(anId));
+    if (!itIsFloatNumber) {
+      // Remove last incorrect char.
+      getById(anId).value = valueOf(anId).slice(0,-1);
+    }
+  });
+}
+
+function checkIfCarbsValueIsValid() {
+  getById("carbs").addEventListener("input", function(key) {
+    // If user inputed carbs value - we have to clean up food name.
+    cleanInput("food-name-id");
+    setColorOf("food-name-helper-id", "rgba(0,0,0,0.54)"); // From Materialize CSS.
+    const carbsValue = parseFloat(valueOf("carbs"));
+    if (carbsValue && (carbsValue < 0.0 || carbsValue > 100.0)) {
+      // If carbs number is incorrect - we just remove it.
+      setColorOf("carbs-helper-id", "red");
+      cleanInput("carbs");
+      cleanNDisableAmountInputs();
+    } else {
+      // The value is valid, remove red color from helper label.
+      setColorOf("carbs-helper-id", "rgba(0,0,0,0.54)"); // From Materialize CSS.
+      // Store it for the calculation.
+      currentCarbsIn100g = carbsValue;
+    }
+  });
+}
+
+function checkIfFoodNameIsValid() {
+  getById("food-name-id").addEventListener("input", function(key) {
+    // If user inputed food name - we have to clean up carbs value.
+    cleanInput("carbs");
+    setColorOf("carbs-helper-id", "rgba(0,0,0,0.54)"); // From Materialize CSS.
+    // Check if food name is known.
+    const foodName = valueOf("food-name-id");
+    var nameIsValid = false;
+    for (const keyFoodNames of food.keys()) {
+      const name = keyFoodNames[currentLanguage];
+      if (foodName && (name === foodName)) {
+        nameIsValid = true;
+        // Store corresponding carbs value for calculation.
+        currentCarbsIn100g = food.get(keyFoodNames);
+        break;
+      }
+    }
+    if (nameIsValid) {
+      getById("food-name-helper-id").innerHTML = "";
+    } else {
+      getById("food-name-helper-id").innerHTML = foodNameIsUnknown(currentLanguage);
+      setColorOf("food-name-helper-id", "red");
+      cleanNDisableAmountInputs();
+    }
+  });
+}
+
+function foodNameIsUnknown(lang) {
+  switch(lang) {
+    case "ru": return "Выберите продукт из списка";
+    case "en": return "Please select a food from the list";
+  }
+}
+
+function enableAmountInputs() {
+  getById("in-grams").disabled = false;
+  getById("in-bunits").disabled = false;
+  setColorOf("arr-id", "#333");
+}
+
+function cleanInput(anId) {
+  getById(anId).value = "";
+}
+
+function resetInput(anId) {
+  getById(anId).disabled = true;
+  cleanInput(anId);
+}
+
+function cleanNDisableAmountInputs() {
+  resetInput("in-grams");
+  resetInput("in-bunits");
+  setColorOf("arr-id", "#bcbcbc");
+}
+
+const enText = {
+    "pageTitle":         "Bread Unit"
+  , "breadUnitTitle":    "Bread Unit"
+  , "whatIsItButton":    "What is it?"
+  , "agree":             "I see"
+  , "foodName":          "Food name"
+  , "foodNameHelper":    "Start type a name..."
+  , "or":                "or"
+  , "carbs":             "Carbs/100 g"
+  , "carbsHelper":       "Input a number from 0 to 100"
+  , "grams":             "Grams"
+  , "gramsHelper":       "How many grams"
+  , "bunits":            "BU"
+  , "bunitsHelper":      "How many bread units"
+  , "me":                "Shevchenko"
+  , "whatIsItDetails":   "Bread units (BU) calculator, converts BU in grams and vice versa."
+  , "howToUseIt":        "How to use it"
+  , "howToUseItDetails": "Select a food in the «Food name», start typing and pick your food from the list. If there's no food you need, input carbohydrates value in «Carbs/100g» (the amount of carbohydrates in 100g of the meal). Then input amount of the meal: if you specify it in grams, you'll see corresponding amount in bread units, and vice versa."
+  , "disclaimer":        "Attention!"
+  , "disclaimerDetails": "I'm happy that this calculator helps people who lives with T1D. But I'm not endocrinologist and this calculator cannot be treated as an official medical nutrition guide for diabetics. If you need a medical advice, please consult a specialist."
+}
+
+const ruText = {
+    "pageTitle":         "Хлебная Единица"
+  , "breadUnitTitle":    "Хлебная Единица"
+  , "whatIsItButton":    "Что это?"
+  , "agree":             "Понятно"
+  , "foodName":          "Название продукта"
+  , "foodNameHelper":    "Начните печатать название..."
+  , "or":                "или"
+  , "carbs":             "Углеводы на 100 г"
+  , "carbsHelper":       "Введите значение от 0 до 100"
+  , "grams":             "Граммы"
+  , "gramsHelper":       "Количество в граммах"
+  , "bunits":            "ХЕ"
+  , "bunitsHelper":      "Количество в хлебных единицах"
+  , "me":                "Шевченко"
+  , "whatIsItDetails":   "Калькулятор хлебных единиц (ХЕ) для диабетиков, переводит ХЕ в граммы и наоборот."
+  , "howToUseIt":        "Как им пользоваться"
+  , "howToUseItDetails": "Выберите продукт в поле «Название продукта», начните печатать и вам будут предложены соответствующие варианты. Если среди них нет вашего продукта, в поле «Углеводы» введите количество углеводов на 100 г продукта. Затем укажите количество: если введёте в граммах, увидите рассчитанное количество в ХЕ, если же введёте в ХЕ, калькулятор рассчитает количество в граммах."
+  , "disclaimer":        "Внимание!"
+  , "disclaimerDetails": "Я очень рад, что мой калькулятор помогает людям, живущим с сахарным диабетом. Однако я не эндокринолог, и этот калькулятор не может рассматриваться как медицинское руководство по питанию для диабетиков. Если вам нужна медицинская консультация — пожалуйста, обратитесь к специалисту."
+}
+
+function translate(localizedText){
+  for (const el of document.querySelectorAll("[data-tkey]")) {
+    el.innerHTML = localizedText[el.getAttribute("data-tkey")];
+  }
+}
+
+function setLanguage(lang) {
+  localStorage.setItem("BU_language", lang);
+  // Show current language on a dropdown-button.
+  getById("language-selector-id").innerHTML = getLangName(lang) + "&nbsp;&nbsp;&nbsp;<span style=\"font-size: 140%;\">&#8964;</span>";
+  currentLanguage = lang;
+  if (lang == "ru") {
+    translate(ruText);
+  } else {
+    translate(enText);
+  }
+  // If use changed the language - reset everything.
+  getById("aForm").reset();
+  // Set focus to force the label go up.
+  getById("carbs").focus();
+  getById("in-grams").focus();
+  getById("in-bunits").focus();
+  // Load the list for food autocomplete, corresponding to selected language.
+  var ob = {};
+  for (const foodNames of food.keys()) {
+    const name = foodNames[lang];
+    ob[name] = null; // We don't need items pictures.
+  }
+  const autoCompleteInstance = M.Autocomplete.init
+       ( getById("food-name-id")
+       , { "data": ob
+         , onAutocomplete: function () {
+             // Food is selected, so it's definitely correct, remove error message;
+             getById("food-name-helper-id").innerHTML = "";
+             enableAmountInputs();
+             const foodName = valueOf("food-name-id");
+             for (const keyFoodNames of food.keys()) {
+               const name = keyFoodNames[currentLanguage];
+               if (foodName && (name === foodName)) {
+                 // Store corresponding carbs value for calculation.
+                 currentCarbsIn100g = food.get(keyFoodNames);
+                 break;
+               }
+             }
+           }
+         }
+       );
+
+    setColorOf("food-name-helper-id", "rgba(0,0,0,0.54)"); // From Materialize CSS.
+    cleanNDisableAmountInputs();
+    // We assume that user wants to input the food name by default, not the carbs value.
+    getById("food-name-id").focus();
+}
+
+function setColorOf(anId, color) {
+    getById(anId).style.color = color;
+}
+
+function getLangName(lang) {
+  switch(lang) {
+    case "ru": return "Русский";
+    case "en": return "English";
+  }
+}
+
+function calculateFoodAmount() {
+  getById("in-grams").addEventListener("input", function(e){
+    if (valueOf("in-grams")) {
+      const howManyGrams = parseFloat(valueOf("in-grams"));
+      getById("in-bunits").value = convertToBU(howManyGrams);
+    } else {
+      // If one there's no grams - there's no bunits as well.
+      cleanInput("in-bunits");
+    }
+  });
+
+  getById("in-bunits").addEventListener("input", function(e){
+    if (valueOf("in-bunits")) {
+      const howManyBU = parseFloat(valueOf("in-bunits"));
+      getById("in-grams").value = convertToGrams(howManyBU);
+    } else {
+      // If one there's no bunits - there's no grams as well.
+      cleanInput("in-grams");
+    }
+  });
+}
+
+function convertToGrams(howManyBU) {
+  const howManyBUIn100g = currentCarbsIn100g / gramsIn1BU;
+  // howManyBUIn100g -> 100 g
+  // howManyBU       -> ? g
+  const howManyGrams = (howManyBU * 100.0) / howManyBUIn100g;
+  // There's no reason to show grams as a float number: kitchen scales are not so precise. ;-)
+  return Math.round(howManyGrams);
+}
+
+function convertToBU(howManyGrams) {
+  const howManyBUIn100g = currentCarbsIn100g / gramsIn1BU;
+  // 100 g        -> howManyBUIn100g
+  // howManyGrams -> ? BU
+  const howManyBU = (howManyGrams * howManyBUIn100g) / 100.0;
+  // There's no reason to show more than 2 numbers after point.
+  return Number((howManyBU).toFixed(2));
+}
+
+function createFood() {
+  const food = new Map(
+    [ [{ "ru": "Абрикос"
+       , "en": "Apricot"
+       }, 9.0]
+    , [{ "ru": "Апельсин"
+       , "en": "Orange"
+       }, 8.1]
+    , [{ "ru": "Арбуз"
+       , "en": "Watermelon"
+       }, 5.8]
+    , [{ "ru": "Банан"
+       , "en": "Banana"
+       }, 21.8]
+    , [{ "ru": "Блины"
+       , "en": "Pancakes"
+       }, 26.0]
+    , [{ "ru": "Виноград"
+       , "en": "Grapes"
+       }, 17.0]
+    , [{ "ru": "Вишня"
+       , "en": "Cherry"
+       }, 11.3]
+    , [{ "ru": "Дыня"
+       , "en": "Melon"
+       }, 7.4]
+    , [{ "ru": "Капуста белокочанная"
+       , "en": "Cabbage"
+       }, 4.7]
+    , [{ "ru": "Картофель жареный"
+       , "en": "Fried potatoes"
+       }, 23.4]
+    , [{ "ru": "Каша гречневая"
+       , "en": "Buckwheat porridge"
+       }, 25.0]
+    , [{ "ru": "Каша овсяная на молоке"
+       , "en": "Oatmeal"
+       }, 14.2]
+    , [{ "ru": "Лаваш армянский"
+       , "en": "Armenian pita"
+       }, 47.6]
+    , [{ "ru": "Макароны отварные"
+       , "en": "Pasta cooked"
+       }, 23.2]
+    , [{ "ru": "Мандарин"
+       , "en": "Tangerine"
+       }, 7.7]
+    , [{ "ru": "Морковь"
+       , "en": "Carrot"
+       }, 6.9]
+    , [{ "ru": "Персик"
+       , "en": "Peach"
+       }, 11.3]
+    , [{ "ru": "Пюре картофельное"
+       , "en": "Mashed potatoes"
+       }, 14.7]
+    , [{ "ru": "Рис белый отварной"
+       , "en": "White rice cooked"
+       }, 24.9]
+    , [{ "ru": "Рис пропаренный отварной"
+       , "en": "Steamed rice cooked"
+       }, 27.7]
+    , [{ "ru": "Сахар-песок"
+       , "en": "Sugar"
+       }, 99.7]
+    , [{ "ru": "Сахар-рафинад"
+       , "en": "Granulated sugar"
+       }, 99.9]
+    , [{ "ru": "Слива"
+       , "en": "Plum"
+       }, 9.6]
+    , [{ "ru": "Хлеб белый"
+       , "en": "Bread white"
+       }, 49.1]
+    , [{ "ru": "Черешня"
+       , "en": "Merry"
+       }, 11.5]
+    , [{ "ru": "Чернослив"
+       , "en": "Prunes"
+       }, 57.5]
+    , [{ "ru": "Чечевица отварная"
+       , "en": "Lentil cooked"
+       }, 20.1]
+    , [{ "ru": "Яблоко Гольден"
+       , "en": "Apple"
+       }, 11.2]
+    ]);
+  return food;
+}
+    </script>
+  </body>
 </html>
