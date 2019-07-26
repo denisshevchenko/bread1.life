@@ -8,7 +8,7 @@ var currentLanguage = "";
 // Global state for the current carbs value (carbs/100g) for calculation.
 var currentCarbsIn100g = 0;
 
-$(document).ready(function(){
+document.addEventListener('DOMContentLoaded', function(){ 
     // Remember what language was used before...
     currentLanguage = localStorage.getItem("BU_language");
     if (!currentLanguage) {
@@ -16,18 +16,18 @@ $(document).ready(function(){
     }
     setLanguage(currentLanguage);
     // Initialize modal dialogs and dropdowns.
-    $(".modal").modal();
-    $(".dropdown-trigger").dropdown();
+    const modalInstances = M.Modal.init(document.querySelectorAll('.modal'));
+    const dropdownInstances = M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
     // In the beginning inputs for amount are disabled.
     cleanNDisableAmountInputs();
 
-    checkIfUserIsDefiningFood("#food_name");
-    checkIfUserIsDefiningFood("#carbs");
+    checkIfUserIsDefiningFood("food_name");
+    checkIfUserIsDefiningFood("carbs");
 
     // Make sure user inputs numbers only...
-    validateNumberIn("#carbs");
-    validateNumberIn("#in_gramms");
-    validateNumberIn("#in_bunits");
+    validateNumberIn("carbs");
+    validateNumberIn("in_gramms");
+    validateNumberIn("in_bunits");
 
     // It should be from 0 to 100.
     checkIfCarbsValueIsValid();
@@ -36,26 +36,19 @@ $(document).ready(function(){
     checkIfFoodNameIsValid();
 
     calculateFoodAmount();
-});
+}, false);
 
-// Clearable input for food name.
-function tog(v) {
-    return (v ? "addClass" : "removeClass");
+function getById(anId) {
+    return document.getElementById(anId);
 }
-$(document).on("input", ".clearable", function() {
-    $(this)[tog(this.value)]("x");
-}).on("mousemove", ".x", function( e ) {
-    $(this)[tog(this.offsetWidth-18 < e.clientX-this.getBoundingClientRect().left)]("onX");
-}).on("touchstart click", ".onX", function( ev ) {
-    ev.preventDefault();
-    $(this).removeClass("x onX").val("").change();
-    // Reset amount inputs as well...
-    cleanNDisableAmountInputs();
-});
+
+function valueOf(anId) {
+    return getById(anId).value.trim();
+}
 
 function checkIfUserIsDefiningFood(anId) {
-    $(anId).on("input",function(e){
-        if( $.trim( $(anId).val() ) == "" ) {
+    getById(anId).addEventListener("input",function(e){
+        if( valueOf(anId) == "" ) {
             cleanNDisableAmountInputs();
         } else {
             enableAmountInputs();
@@ -64,7 +57,7 @@ function checkIfUserIsDefiningFood(anId) {
 }
 
 function validateNumberIn(anId) {
-    $(anId).keypress(function(key) {
+    getById(anId).addEventListener("keypress", function(key) {
         const itIsDigit = key.charCode >= 48 && key.charCode <= 57;
         const itIsDoubleSeparator = String.fromCharCode(key.which) == "." || String.fromCharCode(key.which) == ",";
         if (!itIsDigit && !itIsDoubleSeparator) {
@@ -72,30 +65,30 @@ function validateNumberIn(anId) {
         }
     });
 
-    $(anId).on("input",function(key) {
+    getById(anId).addEventListener("input", function(key) {
         const floatNumberPatt = new RegExp("^[0-9]+([.,\,]{1})?[0-9]*$");
-        const itIsFloatNumber = floatNumberPatt.test($(anId).val());
+        const itIsFloatNumber = floatNumberPatt.test(valueOf(anId));
         if (!itIsFloatNumber) {
             // Remove last incorrect char.
-            $(anId).val( $(anId).val().slice(0,-1) );
+            getById(anId).value = valueOf(anId).slice(0,-1);
         }
     });
 }
 
 function checkIfCarbsValueIsValid() {
-    $("#carbs").on("input",function(key) {
+    getById("carbs").addEventListener("input", function(key) {
         // If user inputed carbs value - we have to clean up food name.
-        cleanInput("#food_name");
-        $("#food-name-helper-id").css("color", "rgba(0,0,0,0.54)"); // From Materialize CSS.
-        const carbsValue = parseFloat($("#carbs").val());
+        cleanInput("food_name");
+        getById("food-name-helper-id").style.color = "rgba(0,0,0,0.54)"; // From Materialize CSS.
+        const carbsValue = parseFloat(valueOf("carbs"));
         if (carbsValue && (carbsValue < 0.0 || carbsValue > 100.0)) {
             // If carbs number is incorrect - we just remove it.
-            $("#carbs-helper-id").css("color", "red");
-            cleanInput("#carbs");
+            getById("carbs-helper-id").style.color = "red";
+            cleanInput("carbs");
             cleanNDisableAmountInputs();
         } else {
             // The value is valid, remove red color from helper label.
-            $("#carbs-helper-id").css("color", "rgba(0,0,0,0.54)"); // From Materialize CSS.
+            getById("carbs-helper-id").style.color = "rgba(0,0,0,0.54)"; // From Materialize CSS.
             // Store it for the calculation.
             currentCarbsIn100g = carbsValue;
         }
@@ -103,12 +96,12 @@ function checkIfCarbsValueIsValid() {
 }
 
 function checkIfFoodNameIsValid() {
-    $("#food_name").on("input",function(key) {
+    getById("food_name").addEventListener("input", function(key) {
         // If user inputed food name - we have to clean up carbs value.
-        cleanInput("#carbs");
-        $("#carbs-helper-id").css("color", "rgba(0,0,0,0.54)"); // From Materialize CSS.
+        cleanInput("carbs");
+        getById("carbs-helper-id").style.color = "rgba(0,0,0,0.54)"; // From Materialize CSS.
         // Check if food name is known.
-        const foodName = $.trim( $("#food_name").val() );
+        const foodName = valueOf("food_name");
         var nameIsValid = false;
         for (const keyFoodNames of food.keys()) {
             const name = keyFoodNames[currentLanguage];
@@ -116,15 +109,14 @@ function checkIfFoodNameIsValid() {
                 nameIsValid = true;
                 // Store corresponding carbs value for calculation.
                 currentCarbsIn100g = food.get(keyFoodNames);
-                alert(currentCarbsIn100g);
                 break;
             }
         }
         if (nameIsValid) {
-            $("#food-name-helper-id").html("");
+            getById("food-name-helper-id").innerHTML = "";
         } else {
-            $("#food-name-helper-id").html(foodNameIsUnknown(currentLanguage));
-            $("#food-name-helper-id").css("color", "red");
+            getById("food-name-helper-id").innerHTML = foodNameIsUnknown(currentLanguage);
+            getById("food-name-helper-id").style.color = "red";
             cleanNDisableAmountInputs();
         }
     });
@@ -138,24 +130,24 @@ function foodNameIsUnknown(lang) {
 }
 
 function enableAmountInputs() {
-    $("#in_gramms").prop("disabled", false);
-    $("#in_bunits").prop("disabled", false);
-    $("#arr-id").css("color", "#333");
+    getById("in_gramms").disabled = false;
+    getById("in_bunits").disabled = false;
+    getById("arr-id").style.color = "#333";
 }
 
 function cleanInput(anId) {
-    $(anId).val("");
+    getById(anId).value = "";
 }
 
 function resetInput(anId) {
-    $(anId).prop("disabled", true);
+    getById(anId).disabled = true;
     cleanInput(anId);
 }
 
 function cleanNDisableAmountInputs() {
-    resetInput("#in_gramms");
-    resetInput("#in_bunits");
-    $("#arr-id").css("color", "#bcbcbc");
+    resetInput("in_gramms");
+    resetInput("in_bunits");
+    getById("arr-id").style.color = "#bcbcbc";
 }
 
 const enText = {
@@ -205,16 +197,15 @@ const ruText = {
 }
 
 function translate(localizedText){
-    $("[data-tkey]").each (function (index) {
-        const localizedStr = localizedText[$(this).attr ("data-tkey")];
-        $(this).html(localizedStr);
-    });
+    for (const el of document.querySelectorAll("[data-tkey]")) {
+        el.innerHTML = localizedText[el.getAttribute("data-tkey")];
+    }
 }
 
 function setLanguage(lang) {
     localStorage.setItem("BU_language", lang);
     // Show current language on a dropdown-button.
-    $("#language-selector-id").html(lang + "&nbsp;&nbsp;&nbsp;▼");
+    getById("language-selector-id").innerHTML = lang + "&nbsp;&nbsp;&nbsp;▼";
     currentLanguage = lang;
     if (lang == "ru") {
         translate(ruText);
@@ -222,62 +213,61 @@ function setLanguage(lang) {
         translate(enText);
     }
     // If use changed the language - reset everything.
-    $("#aForm").trigger("reset");
+    getById("aForm").reset();
     // Set focus to force the label go up.
-    $("#carbs").focus();
-    $("#in_gramms").focus();
-    $("#in_bunits").focus();
+    getById("carbs").focus();
+    getById("in_gramms").focus();
+    getById("in_bunits").focus();
     // Load the list for food autocomplete, corresponding to selected language.
-    $("#food_name").autocomplete(createAutocompleteFor(lang));
-    $("#food-name-helper-id").css("color", "rgba(0,0,0,0.54)"); // From Materialize CSS.
-    cleanNDisableAmountInputs();
-    // We assume that user wants to input the food name by default, not the carbs value.
-    $("#food_name").focus();
-}
-
-function createAutocompleteFor(lang) {
     var ob = {};
     for (const foodNames of food.keys()) {
         const name = foodNames[lang];
         ob[name] = null; // We don't need items pictures.
     }
-    return { "data": ob
-           , onAutocomplete: function () {
-                   // Food is selected, so it's definitely correct, remove error message;
-                   $("#food-name-helper-id").html("");
-                   enableAmountInputs();
-                   // ...
-                   const foodName = $.trim( $("#food_name").val() );
-                   for (const keyFoodNames of food.keys()) {
-                       const name = keyFoodNames[currentLanguage];
-                       if (foodName && (name === foodName)) {
-                           // Store corresponding carbs value for calculation.
-                           currentCarbsIn100g = food.get(keyFoodNames);
-                           break;
-                       }
+    const autoCompleteInstance = M.Autocomplete.init
+           ( getById("food_name")
+           , { "data": ob
+             , onAutocomplete: function () {
+                 // Food is selected, so it's definitely correct, remove error message;
+                 getById("food-name-helper-id").innerHTML = "";
+                 enableAmountInputs();
+                 const foodName = valueOf("food_name");
+                 for (const keyFoodNames of food.keys()) {
+                   const name = keyFoodNames[currentLanguage];
+                   if (foodName && (name === foodName)) {
+                     // Store corresponding carbs value for calculation.
+                     currentCarbsIn100g = food.get(keyFoodNames);
+                     break;
                    }
+                 }
                }
-           };
+             }
+           );
+    
+    getById("food-name-helper-id").style.color = "rgba(0,0,0,0.54)"; // From Materialize CSS.
+    cleanNDisableAmountInputs();
+    // We assume that user wants to input the food name by default, not the carbs value.
+    getById("food_name").focus();
 }
 
 function calculateFoodAmount() {
-    $("#in_gramms").on("input",function(e){
-        if ($("#in_gramms").val()) {
-            const howManyGrams = parseFloat($("#in_gramms").val());
-            $("#in_bunits").val(convertToBU(howManyGrams));
+    getById("in_gramms").addEventListener("input", function(e){
+        if (valueOf("in_gramms")) {
+            const howManyGrams = parseFloat(valueOf("in_gramms"));
+            getById("in_bunits").value = convertToBU(howManyGrams);
         } else {
             // If one there's no gramms - there's no bunits as well.
-            cleanInput("#in_bunits");
+            cleanInput("in_bunits");
         }
     });
 
-    $("#in_bunits").on("input",function(e){
-        if ($("#in_bunits").val()) {
-            const howManyBU = parseFloat($("#in_bunits").val());
-            $("#in_gramms").val(convertToGrams(howManyBU));
+    getById("in_bunits").addEventListener("input", function(e){
+        if (valueOf("in_bunits")) {
+            const howManyBU = parseFloat(valueOf("in_bunits"));
+            getById("in_gramms").value = convertToGrams(howManyBU);
         } else {
             // If one there's no bunits - there's no gramms as well.
-            cleanInput("#in_gramms");
+            cleanInput("in_gramms");
         }
     });
 }
