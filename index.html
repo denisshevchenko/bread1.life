@@ -36,6 +36,7 @@
         .input-field > label { font-size: 1.0em; color: #444; }
         .input-field .helper-text { font-size: 0.7em; }
         input[type="text"]:not(.browser-default) { font-size: 1.2em; padding-top: 0.5em; }
+        .or { font-size: 1.2em; margin-top: 1.8em; }
         .author { font-size: 80%; color: #999; }
       }
     </style>
@@ -157,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function(){
   checkIfUserIsDefiningFood("food-name-id");
   checkIfUserIsDefiningFood("carbs");
   // Make sure user inputs numbers only...
-  validateNumberIn("carbs");
+  validateNumberInCarbs();
   validateNumberIn("in-grams");
   validateNumberIn("in-bunits");
   // It should be from 0 to 100.
@@ -205,6 +206,31 @@ function validateNumberIn(anId) {
   });
 }
 
+function validateNumberInCarbs() {
+  const anId = "carbs";
+  getById(anId).addEventListener("keypress", function(key) {
+    const itIsDigit = key.charCode >= 48 && key.charCode <= 57;
+    const itIsDoubleSeparator = String.fromCharCode(key.which) == "." || String.fromCharCode(key.which) == ",";
+    if (!itIsDigit && !itIsDoubleSeparator) {
+      setColorOf("carbs-helper-id", "red");
+      return false;
+    } else {
+      setColorOf("carbs-helper-id", "rgba(0,0,0,0.54)");
+      return true;
+    }
+  });
+
+  getById(anId).addEventListener("input", function(key) {
+    const floatNumberPatt = new RegExp("^[0-9]+([.,\,]{1})?[0-9]*$");
+    const itIsFloatNumber = floatNumberPatt.test(valueOf(anId));
+    if (!itIsFloatNumber) {
+      // Remove last incorrect char.
+      getById(anId).value = valueOf(anId).slice(0,-1);
+      cleanNDisableAmountInputs();
+    }
+  });
+}
+
 function checkIfCarbsValueIsValid() {
   getById("carbs").addEventListener("input", function(key) {
     // If user inputed carbs value - we have to clean up food name.
@@ -245,9 +271,15 @@ function checkIfFoodNameIsValid() {
     if (nameIsValid) {
       getById("food-name-helper-id").innerHTML = "";
     } else {
-      getById("food-name-helper-id").innerHTML = foodNameIsUnknown(currentLanguage);
-      setColorOf("food-name-helper-id", "red");
-      cleanNDisableAmountInputs();
+      if (foodName == "") {
+        getById("food-name-helper-id").innerHTML = startTypeAName(currentLanguage);
+        setColorOf("food-name-helper-id", "rgba(0,0,0,0.54)");
+        cleanNDisableAmountInputs();
+      } else {
+        getById("food-name-helper-id").innerHTML = foodNameIsUnknown(currentLanguage);
+        setColorOf("food-name-helper-id", "red");
+        cleanNDisableAmountInputs();
+      }
     }
   });
 }
@@ -256,6 +288,13 @@ function foodNameIsUnknown(lang) {
   switch(lang) {
     case "ru": return "Выберите продукт из списка";
     case "en": return "Please select a food from the list";
+  }
+}
+
+function startTypeAName(lang) {
+  switch(lang) {
+    case "ru": return "Начните печатать&hellip;";
+    case "en": return "Start type a name&hellip;";
   }
 }
 
@@ -286,10 +325,10 @@ const enText = {
   , "whatIsItButton":    "What is it?"
   , "agree":             "I see"
   , "foodName":          "Food name"
-  , "foodNameHelper":    "Start type a name..."
+  , "foodNameHelper":    "Start type a name&hellip;"
   , "or":                "or"
   , "carbs":             "Carbs/100 g"
-  , "carbsHelper":       "Input a number from 0 to 100"
+  , "carbsHelper":       "Number from 0 to 100"
   , "grams":             "Grams"
   , "gramsHelper":       "How many grams"
   , "bunits":            "BU"
@@ -308,18 +347,18 @@ const ruText = {
   , "whatIsItButton":    "Что это?"
   , "agree":             "Понятно"
   , "foodName":          "Название продукта"
-  , "foodNameHelper":    "Начните печатать название..."
+  , "foodNameHelper":    "Начните печатать&hellip;"
   , "or":                "или"
   , "carbs":             "Углеводы на 100 г"
-  , "carbsHelper":       "Введите значение от 0 до 100"
+  , "carbsHelper":       "Число от 0 до 100"
   , "grams":             "Граммы"
-  , "gramsHelper":       "Количество в граммах"
+  , "gramsHelper":       "Сколько грамм"
   , "bunits":            "ХЕ"
-  , "bunitsHelper":      "Количество в хлебных единицах"
+  , "bunitsHelper":      "Сколько ХЕ"
   , "me":                "Шевченко"
   , "whatIsItDetails":   "Калькулятор хлебных единиц (ХЕ) для диабетиков, переводит ХЕ в граммы и наоборот."
   , "howToUseIt":        "Как им пользоваться"
-  , "howToUseItDetails": "Выберите продукт в поле «Название продукта», начните печатать и вам будут предложены соответствующие варианты. Если среди них нет вашего продукта, в поле «Углеводы» введите количество углеводов на 100 г продукта. Затем укажите количество: если введёте в граммах, увидите рассчитанное количество в ХЕ, если же введёте в ХЕ, калькулятор рассчитает количество в граммах."
+  , "howToUseItDetails": "Выберите продукт в поле «Название продукта», начните печатать и вам будут предложены соответствующие варианты. Если среди них нет вашего продукта, в поле «Углеводы на 100 г» введите количество углеводов на 100 г продукта. Затем укажите количество: если введёте в граммах, увидите рассчитанное количество в ХЕ, если же введёте в ХЕ, калькулятор рассчитает количество в граммах."
   , "disclaimer":        "Внимание!"
   , "disclaimerDetails": "Я очень рад, что мой калькулятор помогает людям, живущим с сахарным диабетом. Однако я не эндокринолог, и этот калькулятор не может рассматриваться как медицинское руководство по питанию для диабетиков. Если вам нужна медицинская консультация — пожалуйста, обратитесь к специалисту."
 }
