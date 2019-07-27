@@ -398,6 +398,7 @@ function setLanguage(lang) {
              // Food is selected, so it's definitely correct, remove error message;
              getById("food-name-helper-id").innerHTML = "";
              enableAmountInputs();
+             getById("in-grams").focus();
              const foodName = valueOf("food-name-id");
              for (const keyFoodNames of food.keys()) {
                const name = keyFoodNames[currentLanguage];
