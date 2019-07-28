@@ -24,7 +24,7 @@
 
       .form-v-separator { padding-top: 2em; }
       .or { font-size: 1.4em; margin-top: 1.7em; }
-      .arr { font-size: 2.0em; margin-top: 0.85em; }
+      .arr { font-size: 2.9em; margin-top: 0.35em; }
       .language-selector { font-size: 120%; }
       .logo-img { max-width: 74px; }
       .header-block { padding: 0 0 0 0 !important; }
@@ -37,6 +37,7 @@
         .input-field .helper-text { font-size: 0.7em; }
         input[type="text"]:not(.browser-default) { font-size: 1.2em; padding-top: 0.5em; }
         .or { font-size: 1.2em; margin-top: 1.8em; }
+        .arr { font-size: 2.0em; margin-top: 0.85em; }
         .author { font-size: 80%; color: #999; }
       }
     </style>
@@ -91,7 +92,7 @@
               <span id="in-grams-helper-id" class="helper-text" data-tkey="gramsHelper"></span>
             </div>
 
-            <div id="arr-id" class="col s2 arr center-align">↔</div>
+            <div id="arr-id" class="col s2 arr center-align">&#8660;</div>
 
             <div class="input-field col s5">
               <input placeholder=" " disabled id="in-bunits" type="text">
@@ -161,6 +162,8 @@ document.addEventListener('DOMContentLoaded', function(){
   validateNumberInCarbs();
   validateNumberIn("in-grams");
   validateNumberIn("in-bunits");
+  // Change calculation arrow if need.
+  changeCalcArrowIfNeed();
   // It should be from 0 to 100.
   checkIfCarbsValueIsValid();
   // It should exist in a list (corresponding to current language).
@@ -175,6 +178,16 @@ function getById(anId) {
 
 function valueOf(anId) {
   return getById(anId).value.trim();
+}
+
+function changeCalcArrowIfNeed() {
+  getById("in-grams").addEventListener("focus",function(e){
+    getById("arr-id").innerHTML = "&#8658;";
+  });
+
+  getById("in-bunits").addEventListener("focus",function(e){
+    getById("arr-id").innerHTML = "&#8656;";
+  });
 }
 
 function checkIfUserIsDefiningFood(anId) {
@@ -316,6 +329,7 @@ function resetInput(anId) {
 function cleanNDisableAmountInputs() {
   resetInput("in-grams");
   resetInput("in-bunits");
+  getById("arr-id").innerHTML = "&#8660;";
   setColorOf("arr-id", "#bcbcbc");
 }
 
