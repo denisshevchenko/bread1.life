@@ -5,8 +5,8 @@
     <title data-tkey="pageTitle">&nbsp;</title>
     <meta name="description" content="Bread units calculator. Калькулятор хлебных единиц."/>
     <link rel="shortcut icon" href="img/favicon.png" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <!--<link rel="stylesheet" href="css/materialize.min.css">-->
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">-->
+    <link rel="stylesheet" href="css/materialize.min.css">
     <style>
       html { height: 100%; font-family: "PT Sans", "Roboto", "Lucida Grande", "Calibri", sans-serif; font-size: 1.13em; }
       body { display: flex; flex-direction: column; height: 100vh; }
@@ -120,6 +120,9 @@
             <h5 data-tkey="howToUseIt">&nbsp;</h5>
             <p data-tkey="howToUseItDetails"></p>
 
+            <h5 data-tkey="calculation">&nbsp;</h5>
+            <p data-tkey="calculationDetails"></p>
+
             <h5 data-tkey="disclaimer" class="disclaimerText">&nbsp;</h5>
             <p data-tkey="disclaimerDetails"></p>
           </div>
@@ -130,8 +133,8 @@
       </div>
     </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <!--<script src="js/materialize.min.js"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>-->
+    <script src="js/materialize.min.js"></script>
     <script>
 // Create complete information about the food.
 const food = createFood();
@@ -351,6 +354,8 @@ const enText = {
   , "whatIsItDetails":   "Bread units (BU) calculator, converts BU in grams and vice versa."
   , "howToUseIt":        "How to use it"
   , "howToUseItDetails": "Select a food in the «Food name», start typing and pick your food from the list. If there's no food you need, input carbohydrates value in «Carbs/100g» (the amount of carbohydrates in 100g of the meal). Then input amount of the meal: if you specify it in grams, you'll see corresponding amount in bread units, and vice versa."
+  , "calculation":        "Calculation Info"
+  , "calculationDetails": "1 BU is an amount of food which contain 10-12 grams of digestible carbohydrates (this calculator uses 11 grams). «Carbs/100 g», values are taken from <a href=\"https://www.calorieking.com\">CalorieKing</a> website. Actual value is calculated as «Total Carbs.» - «Dietary Fiber»." 
   , "disclaimer":        "Attention!"
   , "disclaimerDetails": "I'm happy that this calculator helps people who lives with T1D. But I'm not endocrinologist and this calculator cannot be treated as an official medical nutrition guide for diabetics. If you need a medical advice, please consult a specialist."
 }
@@ -373,6 +378,8 @@ const ruText = {
   , "whatIsItDetails":   "Калькулятор хлебных единиц (ХЕ) для диабетиков, переводит ХЕ в граммы и наоборот."
   , "howToUseIt":        "Как им пользоваться"
   , "howToUseItDetails": "Выберите продукт в поле «Название продукта», начните печатать и вам будут предложены соответствующие варианты. Если среди них нет вашего продукта, в поле «Углеводы на 100 г» введите количество углеводов на 100 г продукта. Затем укажите количество: если введёте в граммах, увидите рассчитанное количество в ХЕ, если же введёте в ХЕ, калькулятор рассчитает количество в граммах."
+  , "calculation":        "О вычислении"
+  , "calculationDetails": "1 ХЕ &mdash; это количество пищи, содержащее 10-12 г усваиваемых углеводов (этот калькулятор использует значение 11 г). Значения углеводов на 100 г взяты с сайта <a href=\"https://www.calorieking.com\">CalorieKing</a>. Фактическое значение вычислено по формуле «Total Carbs.» - «Dietary Fiber»."
   , "disclaimer":        "Внимание!"
   , "disclaimerDetails": "Я очень рад, что мой калькулятор помогает людям, живущим с сахарным диабетом. Однако я не эндокринолог, и этот калькулятор не может рассматриваться как медицинское руководство по питанию для диабетиков. Если вам нужна медицинская консультация — пожалуйста, обратитесь к специалисту."
 }
@@ -487,88 +494,94 @@ function createFood() {
   const food = new Map(
     [ [{ "ru": "Абрикос"
        , "en": "Apricot"
-       }, 9.0]
+       }, 9.2]
     , [{ "ru": "Апельсин"
        , "en": "Orange"
-       }, 8.1]
+       }, 9.4]
     , [{ "ru": "Арбуз"
        , "en": "Watermelon"
-       }, 5.8]
+       }, 7.2]
     , [{ "ru": "Банан"
        , "en": "Banana"
-       }, 21.8]
-    , [{ "ru": "Блины"
-       , "en": "Pancakes"
-       }, 26.0]
-    , [{ "ru": "Виноград"
-       , "en": "Grapes"
-       }, 17.0]
+       }, 20.2]
+    , [{ "ru": "Виноград красный/зелёный"
+       , "en": "Red/Green grapes"
+       }, 17.2]
     , [{ "ru": "Вишня"
        , "en": "Cherry"
-       }, 11.3]
-    , [{ "ru": "Дыня"
-       , "en": "Melon"
-       }, 7.4]
-    , [{ "ru": "Капуста белокочанная"
-       , "en": "Cabbage"
-       }, 4.7]
-    , [{ "ru": "Картофель жареный"
-       , "en": "Fried potatoes"
-       }, 23.4]
-    , [{ "ru": "Каша гречневая"
-       , "en": "Buckwheat porridge"
-       }, 25.0]
-    , [{ "ru": "Каша овсяная на молоке"
-       , "en": "Oatmeal"
-       }, 14.2]
-    , [{ "ru": "Лаваш армянский"
-       , "en": "Armenian pita"
-       }, 47.6]
-    , [{ "ru": "Макароны отварные"
-       , "en": "Pasta cooked"
-       }, 23.2]
-    , [{ "ru": "Мандарин"
-       , "en": "Tangerine"
-       }, 7.7]
-    , [{ "ru": "Морковь"
-       , "en": "Carrot"
-       }, 6.9]
-    , [{ "ru": "Персик"
-       , "en": "Peach"
-       }, 11.3]
-    , [{ "ru": "Пюре картофельное"
-       , "en": "Mashed potatoes"
-       }, 14.7]
-    , [{ "ru": "Рис белый отварной"
-       , "en": "White rice cooked"
-       }, 24.9]
-    , [{ "ru": "Рис пропаренный отварной"
-       , "en": "Steamed rice cooked"
-       }, 27.7]
+       }, 13.9]
+    , [{ "ru": "Черешня"
+       , "en": "Merry"
+       }, 11.5]
     , [{ "ru": "Сахар-песок"
        , "en": "Sugar"
        }, 99.7]
     , [{ "ru": "Сахар-рафинад"
        , "en": "Granulated sugar"
        }, 99.9]
-    , [{ "ru": "Слива"
-       , "en": "Plum"
-       }, 9.6]
-    , [{ "ru": "Хлеб белый"
-       , "en": "Bread white"
-       }, 49.1]
-    , [{ "ru": "Черешня"
-       , "en": "Merry"
-       }, 11.5]
     , [{ "ru": "Чернослив"
        , "en": "Prunes"
-       }, 57.5]
-    , [{ "ru": "Чечевица отварная"
-       , "en": "Lentil cooked"
-       }, 20.1]
+       }, 56.8]
     , [{ "ru": "Яблоко Гольден"
-       , "en": "Apple"
+       , "en": "Golden Apple"
        }, 11.2]
+    , [{ "ru": "Яблоко красное"
+       , "en": "Red apple"
+       }, 11.8]
+    , [{ "ru": "Капуста белокочанная"
+       , "en": "Cabbage"
+       }, 3.6]
+    , [{ "ru": "Картофель жареный"
+       , "en": "Potato fries"
+       }, 26.1]
+    , [{ "ru": "Мандарин"
+       , "en": "Tangerine"
+       }, 11.5]
+    , [{ "ru": "Морковь"
+       , "en": "Carrot"
+       }, 6.8]
+    , [{ "ru": "Слива"
+       , "en": "Plum"
+       }, 10.0]
+    , [{ "ru": "Персик"
+       , "en": "Peach"
+       }, 8.4]
+    , [{ "ru": "Дыня"
+       , "en": "Honeydew melon"
+       }, 8.3]
+    , [{ "ru": "Пюре картофельное"
+       , "en": "Mashed potatoes"
+       }, 15.4]
+    , [{ "ru": "Хлеб белый"
+       , "en": "Bread white"
+       }, 46.3]
+    , [{ "ru": "Чечевица отварная"
+       , "en": "Lentil boiled"
+       }, 12.2]
+    , [{ "ru": "Рис белый длиннозёрный отварной"
+       , "en": "Long grain white rice boiled"
+       }, 21.8]
+    , [{ "ru": "Рис белый круглый отварной"
+       , "en": "Short grain white rice boiled"
+       }, 28.7]
+    , [{ "ru": "Рис белый пропаренный отварной"
+       , "en": "Steamed white rice boiled"
+       }, 27.7]
+    , [{ "ru": "Лаваш армянский тонкий"
+       , "en": "Armenian pita thin"
+       }, 51.6]
+    , [{ "ru": "Блины тонкие"
+       , "en": "Pancakes thin"
+       }, 22.7]
+    , [{ "ru": "Каша овсяная на молоке"
+       , "en": "Oatmeal milk"
+       }, 14.2]
+    , [{ "ru": "Каша гречневая"
+       , "en": "Buckwheat porridge"
+       }, 25.0]
+    , [{ "ru": "Макароны отварные"
+       , "en": "Pasta boiled"
+       }, 23.0]
     ]);
   return food;
 }
