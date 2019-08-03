@@ -11,7 +11,12 @@
       html { height: 100%; font-family: "PT Sans", "Roboto", "Lucida Grande", "Calibri", sans-serif; font-size: 1.13em; }
       body { display: flex; flex-direction: column; height: 100vh; }
 
-      header { padding-top: 3em; padding-bottom: 5em; }
+      header { padding-bottom: 5em; }
+      nav { background-color: whitesmoke; }
+      nav a { color: #039be5 !important; }
+      nav .brand-logo { margin-top: 0.31em !important; }
+      nav a.sidenav-trigger { font-size: 145% !important; }
+      .sidenav li > a { color: #039be5 !important; font-size: 93% !important; }
       main { flex: 1 0 auto; }
       footer { flex-shrink: 0; padding-bottom: 2em; }
 
@@ -25,14 +30,15 @@
       .form-v-separator { padding-top: 2em; }
       .or { font-size: 1.4em; margin-top: 1.7em; }
       .arr { font-size: 2.9em; margin-top: 0.35em; }
-      .language-selector { font-size: 120%; }
-      .logo-img { max-width: 74px; }
+      .language-selector { font-size: 100%; }
+      .logo-img { max-width: 68px; }
       .header-block { padding: 0 0 0 0 !important; }
       .disclaimerText { color: #dd2c00; }
       .author { font-size: 90%; color: #999; }
       /* Specific styles for mobile displays */
       @media only screen and (max-width: 380px) {
-        header { padding-top: 2em; padding-bottom: 3em; }
+        header { padding-bottom: 3em; }
+        nav .brand-logo { margin-top: 0.21em !important; }
         .input-field > label { font-size: 1.0em; color: #444; }
         .input-field .helper-text { font-size: 0.7em; }
         input[type="text"]:not(.browser-default) { font-size: 1.2em; padding-top: 0.5em; }
@@ -40,28 +46,64 @@
         .arr { font-size: 2.0em; margin-top: 0.85em; }
         .author { font-size: 80%; color: #999; }
       }
+      @media only screen and (max-width: 480px) {
+        nav .brand-logo { margin-top: 0.21em !important; }
+      }
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   </head>
 
   <body>
     <header>
-      <div class="container">
-        <div class="row">
-          <div class="col s6 header-block">
-            <img src="img/bread1.png" class="logo-img" alt="Bread1" />
+      <div class="navbar-fixed">
+        <nav>
+          <div class="container">
+            <div class="nav-wrapper">      
+              <img src="img/bread1.png" class="logo-img brand-logo" alt="Bread1" />
+              <a href="#" data-target="menuMobile" class="sidenav-trigger">&#9776;</a>
+              <ul class="right hide-on-med-and-down">
+                <li><a href="" data-target="modalWhatIsIt" class="modal-trigger" data-tkey="whatIsItButton"></a></li>
+                <li><a id="language-selector-id" class="dropdown-trigger" href="#!" data-target="set-lang"></a></li>
+              </ul> 
+            </div>
           </div>
+        </nav>
+      </div>
 
-          <div class="col s6 right-align language-selector header-block">
-            <a id="language-selector-id" class="dropdown-trigger waves-effect btn-flat" data-target='set-lang'></a>
+      <ul class="sidenav" id="menuMobile">
+        <li><a href="" data-target="modalWhatIsIt" class="modal-trigger" data-tkey="whatIsItButton"></a></li>
+        <li><a id="language-selector-mobile-id" class="dropdown-trigger" href="#!" data-target="set-lang-mobile"></a></li>
+      </ul>
 
-            <ul id='set-lang' class='dropdown-content'>
-              <li><a onclick="setLanguage('en')">English</a></li>
-              <li><a onclick="setLanguage('ru')">Русский</a></li>
-            </ul>
-          </div>
+      <div id="modalWhatIsIt" class="modal">
+        <div class="modal-content">
+          <h4 data-tkey="breadUnitTitle">&nbsp;</h4>
+
+          <p data-tkey="whatIsItDetails"></p>
+
+          <h5 data-tkey="howToUseIt">&nbsp;</h5>
+          <p data-tkey="howToUseItDetails"></p>
+
+          <h5 data-tkey="calculation">&nbsp;</h5>
+          <p data-tkey="calculationDetails"></p>
+
+          <h5 data-tkey="disclaimer" class="disclaimerText">&nbsp;</h5>
+          <p data-tkey="disclaimerDetails"></p>
+        </div>
+        <div class="modal-footer">
+          <a class="modal-close waves-effect btn-flat" data-tkey="agree"></a>
         </div>
       </div>
+
+      <ul id="set-lang" class="dropdown-content">
+        <li><a onclick="setLanguage('en')">English</a></li>
+        <li><a onclick="setLanguage('ru')">Русский</a></li>
+      </ul>
+
+      <ul id="set-lang-mobile" class="dropdown-content">
+        <li><a onclick="setLanguage('en')">English</a></li>
+        <li><a onclick="setLanguage('ru')">Русский</a></li>
+      </ul>
     </header>
 
     <main>
@@ -106,30 +148,9 @@
 
     <footer>
       <div class="container">
-        <a href="" data-target="modal1" class="modal-trigger" data-tkey="whatIsItButton"></a>
         <span class="author">
-          &nbsp;&nbsp;&#8226;&nbsp;&nbsp; &copy; <a href="https://dshevchenko.biz" data-tkey="me"></a> 2017&mdash;2019
-        </span>
-
-        <div id="modal1" class="modal">
-          <div class="modal-content">
-            <h4 data-tkey="breadUnitTitle">&nbsp;</h4>
-
-            <p data-tkey="whatIsItDetails"></p>
-
-            <h5 data-tkey="howToUseIt">&nbsp;</h5>
-            <p data-tkey="howToUseItDetails"></p>
-
-            <h5 data-tkey="calculation">&nbsp;</h5>
-            <p data-tkey="calculationDetails"></p>
-
-            <h5 data-tkey="disclaimer" class="disclaimerText">&nbsp;</h5>
-            <p data-tkey="disclaimerDetails"></p>
-          </div>
-          <div class="modal-footer">
-            <a class="modal-close waves-effect btn-flat" data-tkey="agree"></a>
-          </div>
-        </div>
+          &copy; <a href="https://dshevchenko.biz" data-tkey="me"></a> 2017&mdash;2019
+        </span> 
       </div>
     </footer>
 
@@ -156,6 +177,8 @@ document.addEventListener('DOMContentLoaded', function(){
   // Initialize modal dialogs and dropdowns.
   const modalInstances = M.Modal.init(document.querySelectorAll('.modal'));
   const dropdownInstances = M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
+  const mobileMenuInstances = M.Sidenav.init(document.querySelectorAll('.sidenav'));
+    
   // In the beginning inputs for amount are disabled.
   cleanNDisableAmountInputs();
   // Does user define food?
@@ -393,7 +416,8 @@ function translate(localizedText){
 function setLanguage(lang) {
   localStorage.setItem("BU_language", lang);
   // Show current language on a dropdown-button.
-  getById("language-selector-id").innerHTML = getLangName(lang) + "&nbsp;&nbsp;&nbsp;<span style=\"font-size: 140%;\">&#8964;</span>";
+  getById("language-selector-id").innerHTML = getLangName(lang) + "&nbsp;&nbsp;&#8964;";
+  getById("language-selector-mobile-id").innerHTML = getLangName(lang) + "&nbsp;&nbsp;&#8964;";
   currentLanguage = lang;
   if (lang == "ru") {
     translate(ruText);
