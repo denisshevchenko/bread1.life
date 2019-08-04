@@ -175,10 +175,9 @@ document.addEventListener('DOMContentLoaded', function(){
   }
   setLanguage(currentLanguage);
   // Initialize modal dialogs and dropdowns.
-  const modalInstances = M.Modal.init(document.querySelectorAll('.modal'));
-  const dropdownInstances = M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
-  const mobileMenuInstances = M.Sidenav.init(document.querySelectorAll('.sidenav'));
-    
+  M.Modal.init(document.querySelectorAll('.modal'));
+  M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
+  M.Sidenav.init(document.querySelectorAll('.sidenav'));
   // In the beginning inputs for amount are disabled.
   cleanNDisableAmountInputs();
   // Does user define food?
