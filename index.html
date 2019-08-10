@@ -162,6 +162,10 @@ const food = createFood();
 // 1 BU is amount of food that contains 10-12 grams of digestible carbohydrates,
 // let's take 11.0 for now.
 const gramsIn1BU = 11.0;
+// Reg exp for positive decimal/float number
+const floatNumberPatt = /(^[0-9]+([.,\,]{1})?[0-9]*$)/;
+// Default grey-like color from Materialize CSS.
+const greyColor = "rgba(0,0,0,0.54)";
 // Global state for the current language.
 var currentLanguage = "";
 // Global state for the current carbs value (carbs/100g) for calculation.
@@ -217,7 +221,7 @@ function changeCalcArrowIfNeed() {
 
 function checkIfUserIsDefiningFood(anId) {
   getById(anId).addEventListener("input",function(e){
-    if( valueOf(anId) == "" ) {
+    if( valueOf(anId) === "" ) {
       cleanNDisableAmountInputs();
     } else {
       enableAmountInputs();
@@ -225,19 +229,21 @@ function checkIfUserIsDefiningFood(anId) {
   });
 }
 
+function isIncorrectDigitChar(key) {
+    const itIsDigit = key.charCode >= 48 && key.charCode <= 57;
+    const itIsDoubleSeparator = String.fromCharCode(key.which) === "." || String.fromCharCode(key.which) === ",";
+    return !itIsDigit && !itIsDoubleSeparator;
+}
+
 function validateNumberIn(anId) {
   getById(anId).addEventListener("keypress", function(key) {
-    const itIsDigit = key.charCode >= 48 && key.charCode <= 57;
-    const itIsDoubleSeparator = String.fromCharCode(key.which) == "." || String.fromCharCode(key.which) == ",";
-    if (!itIsDigit && !itIsDoubleSeparator) {
+    if (isIncorrectDigitChar(key)) {
       return false;
     }
   });
 
   getById(anId).addEventListener("input", function(key) {
-    const floatNumberPatt = new RegExp("^[0-9]+([.,\,]{1})?[0-9]*$");
-    const itIsFloatNumber = floatNumberPatt.test(valueOf(anId));
-    if (!itIsFloatNumber) {
+    if (!floatNumberPatt.test(valueOf(anId))) {
       // Remove last incorrect char.
       getById(anId).value = valueOf(anId).slice(0,-1);
     }
@@ -247,24 +253,23 @@ function validateNumberIn(anId) {
 function validateNumberInCarbs() {
   const anId = "carbs";
   getById(anId).addEventListener("keypress", function(key) {
-    const itIsDigit = key.charCode >= 48 && key.charCode <= 57;
-    const itIsDoubleSeparator = String.fromCharCode(key.which) == "." || String.fromCharCode(key.which) == ",";
-    if (!itIsDigit && !itIsDoubleSeparator) {
+    if (isIncorrectDigitChar(key)) {
       setColorOf("carbs-helper-id", "red");
       return false;
     } else {
-      setColorOf("carbs-helper-id", "rgba(0,0,0,0.54)");
+      setColorOf("carbs-helper-id", greyColor);
       return true;
     }
   });
 
   getById(anId).addEventListener("input", function(key) {
-    const floatNumberPatt = new RegExp("^[0-9]+([.,\,]{1})?[0-9]*$");
-    const itIsFloatNumber = floatNumberPatt.test(valueOf(anId));
-    if (!itIsFloatNumber) {
+    if (!floatNumberPatt.test(valueOf(anId))) {
       // Remove last incorrect char.
       getById(anId).value = valueOf(anId).slice(0,-1);
-      cleanNDisableAmountInputs();
+      // Now check if there's some valid value...
+      if (!floatNumberPatt.test(valueOf(anId))) {
+        cleanNDisableAmountInputs();
+      }
     }
   });
 }
@@ -273,7 +278,7 @@ function checkIfCarbsValueIsValid() {
   getById("carbs").addEventListener("input", function(key) {
     // If user inputed carbs value - we have to clean up food name.
     cleanInput("food-name-id");
-    setColorOf("food-name-helper-id", "rgba(0,0,0,0.54)"); // From Materialize CSS.
+    setColorOf("food-name-helper-id", greyColor);
     const carbsValue = parseFloat(valueOf("carbs"));
     if (carbsValue && (carbsValue < 0.0 || carbsValue > 100.0)) {
       // If carbs number is incorrect - we just remove it.
@@ -282,7 +287,7 @@ function checkIfCarbsValueIsValid() {
       cleanNDisableAmountInputs();
     } else {
       // The value is valid, remove red color from helper label.
-      setColorOf("carbs-helper-id", "rgba(0,0,0,0.54)"); // From Materialize CSS.
+      setColorOf("carbs-helper-id", greyColor);
       // Store it for the calculation.
       currentCarbsIn100g = carbsValue;
     }
@@ -293,7 +298,7 @@ function checkIfFoodNameIsValid() {
   getById("food-name-id").addEventListener("input", function(key) {
     // If user inputed food name - we have to clean up carbs value.
     cleanInput("carbs");
-    setColorOf("carbs-helper-id", "rgba(0,0,0,0.54)"); // From Materialize CSS.
+    setColorOf("carbs-helper-id", greyColor);
     // Check if food name is known.
     const foodName = valueOf("food-name-id");
     var nameIsValid = false;
@@ -309,9 +314,9 @@ function checkIfFoodNameIsValid() {
     if (nameIsValid) {
       getById("food-name-helper-id").innerHTML = "";
     } else {
-      if (foodName == "") {
+      if (foodName === "") {
         getById("food-name-helper-id").innerHTML = startTypeAName(currentLanguage);
-        setColorOf("food-name-helper-id", "rgba(0,0,0,0.54)");
+        setColorOf("food-name-helper-id", greyColor);
         cleanNDisableAmountInputs();
       } else {
         getById("food-name-helper-id").innerHTML = foodNameIsUnknown(currentLanguage);
@@ -418,7 +423,7 @@ function setLanguage(lang) {
   getById("language-selector-id").innerHTML = getLangName(lang) + "&nbsp;&nbsp;&#8964;";
   getById("language-selector-mobile-id").innerHTML = getLangName(lang) + "&nbsp;&nbsp;&#8964;";
   currentLanguage = lang;
-  if (lang == "ru") {
+  if (lang === "ru") {
     translate(ruText);
   } else {
     translate(enText);
@@ -456,7 +461,7 @@ function setLanguage(lang) {
          }
        );
 
-    setColorOf("food-name-helper-id", "rgba(0,0,0,0.54)"); // From Materialize CSS.
+    setColorOf("food-name-helper-id", greyColor);
     cleanNDisableAmountInputs();
     // We assume that user wants to input the food name by default, not the carbs value.
     getById("food-name-id").focus();
